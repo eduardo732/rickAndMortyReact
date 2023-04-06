@@ -1,0 +1,12 @@
+.container-title {
+	display: flex;
+	justify-content: center;
+	height: 50vh;
+	width: 100%;
+	margin-top: 5%;
+}
+
+h1 {
+	font-size: 40px;
+	color: #44281D;
+}

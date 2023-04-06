@@ -1,0 +1,10 @@
+*{
+	background-color: #E89AC7;
+}
+main {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 5%;
+}
