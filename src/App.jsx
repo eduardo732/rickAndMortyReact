@@ -2,7 +2,10 @@ import { useEffect, useState } from "react"
 import Card from "./components/Card"
 import Section from "./components/Section"
 import "./App.css"
-import Pagination from "./components/Pagination"
+import ReactPaginate from 'react-paginate';
+import LoadingSpinner from "./components/LoadingSpinner";
+
+// import Pagination from "./components/Pagination"
 
 const PREFIX_RICKANDMORTY_API = "https://rickandmortyapi.com/api"
 const CHARACTERS              = "/character"
@@ -12,21 +15,45 @@ const CHARACTERS              = "/character"
 const App = () => {
 	const [character, setCharacter] = useState([])
 	const [info, setInfo] = useState({})
+	const [currentPage, setCurrentPage] = useState(1);
+	const [isLoading, setIsLoading] = useState(false);
+
+	const paginate = (pageNumber) => {
+		pageNumber.selected += 1
+
+    setCurrentPage(pageNumber.selected);
+  }
 
 	useEffect(() => {
-		fetch(PREFIX_RICKANDMORTY_API+CHARACTERS)
+		setIsLoading(true)
+		fetch(PREFIX_RICKANDMORTY_API+CHARACTERS+`?page=${currentPage}`)
 			.then(res => res.json())
 			.then(json => {
-				setCharacter(json.results)
-				setInfo(json.info)
+				setTimeout(() => {
+					setCharacter(json.results)
+					setInfo(json.info)
+					setIsLoading(false)
+				}, 1500)
+				
 			})
-	}, [])
-	console.log(character, info)
+	}, [currentPage])
+	console.log(character, info.pages, currentPage)
+
 	return (
 		<main>
 			<Section/>
-			<Card character={character}/>
-			<Pagination info={info}/>
+			{isLoading ? <LoadingSpinner/> : <Card character={character}/>}
+			<ReactPaginate
+				onPageChange={paginate}
+				pageCount={info.pages}
+				previousLabel={'Prev'}
+        nextLabel={'Next'}
+        containerClassName={'pagination'}
+        pageLinkClassName={'page-number'}
+        previousLinkClassName={'page-number'}
+        nextLinkClassName={'page-number'}
+        activeLinkClassName={'active'}
+			/>
 		</main>
 	)
 }

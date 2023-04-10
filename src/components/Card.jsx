@@ -6,7 +6,7 @@ const Card = ({character}) => {
 					{
 						(character) ? 
 						character.map(el =>
-							<div className="character" key={el.name}>
+							<div className="character" key={el.id}>
 								<img src={el.image} alt={el.name} />
 								<h2>{el.name}</h2>
 							</div>
